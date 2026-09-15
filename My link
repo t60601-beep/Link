@@ -1,0 +1,1017 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2027 ���� �뺣┝�� 踰싰퐙異뺤젣 怨듭떇 洹몃옒�� �꾪듃 �ъ뒪��</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Noto+Serif+KR:wght@300;600;900&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-deep: #0b0908;
+            --poster-cream: #f4ede2;
+            --blossom-pink: #ffb1bf;
+            --shadow-rose: #e59ba8;
+            --ink-black: #1c1615;
+            --stem-olive: #cbd6cd;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body, html {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: var(--bg-deep);
+            font-family: 'Noto Serif KR', serif;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* 3D �곹솕�� GUI 媛��� 酉고룷�� */
+        .perspective-viewport {
+            width: 100%;
+            height: 100%;
+            perspective: 2000px;
+            position: relative;
+        }
+
+        /* �곹샇�묒슜 泥댁씤�� 嫄몃━�� GUI 臾대튃 而⑦뀒�대꼫 */
+        .gui-motion-stage {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            transform-style: preserve-3d;
+            transition: transform 1.4s cubic-bezier(0.76, 0, 0.24, 1);
+        }
+
+        /* [GUI �대룞 紐낆꽭] 3D �뚯쟾怨� �먭렐 �섏텞�� 寃고빀�� �꾨꼍�� �붾㈃ �꾪솚 �곹깭 */
+        .gui-motion-stage.shifted {
+            transform: translateZ(-400px) rotateX(95deg) translateY(-50%);
+        }
+
+        .screen {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            backface-visibility: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        /* ==========================================
+           SCREEN 1: 由ъ뼹 �덉씠�대뱶 �붿옄�� �꾪듃 �ъ뒪��
+        ========================================== */
+        .poster-screen {
+            background: linear-gradient(135deg, #161211 0%, #0d0a09 100%);
+        }
+
+        .poster-canvas {
+            width: 100%;
+            max-width: 510px;
+            height: 100%;
+            max-height: 840px;
+            background-color: var(--poster-cream);
+            box-shadow: 0 45px 100px rgba(0,0,0,0.5), inset 0 0 40px rgba(0,0,0,0.02);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 42px 34px;
+            border: 1px solid rgba(255,255,255,0.03);
+        }
+
+        /* �덉씠�대뱶 �꾨갑媛�瑜대뱶 �곗텧�� �꾪븳 諛깃렇�쇱슫�� 嫄곕� ���댄룷 */
+        .bg-giant-typography {
+            position: absolute;
+            font-family: 'Cinzel', serif;
+            font-size: 15rem;
+            font-weight: 900;
+            color: rgba(255, 177, 191, 0.12);
+            line-height: 0.7;
+            top: 8%;
+            right: -15%;
+            user-select: none;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .poster-top-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1.5px solid var(--ink-black);
+            padding-bottom: 10px;
+            z-index: 10;
+        }
+
+        .meta-count {
+            font-size: 0.75rem;
+            font-weight: 900;
+            letter-spacing: 0.3rem;
+            color: var(--ink-black);
+        }
+
+        .meta-season {
+            font-family: 'Cinzel', serif;
+            font-size: 0.9rem;
+            font-weight: 900;
+            color: var(--shadow-rose);
+            letter-spacing: 0.1rem;
+        }
+
+        /* �� 珥덇퀬怨좊룄 �덉씠�대뱶 �ㅻ쾭�� �듭떖 援ъ뿭 */
+        .overlap-art-matrix {
+            position: relative;
+            width: 100%;
+            height: 410px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 15px 0;
+        }
+
+        /* 寃뱀묠 �덉씠�� 1: 湲고븯�� 異붿긽 而щ윭 移� 諛곗튂 */
+        .geo-layer-pink-circle {
+            position: absolute;
+            width: 270px;
+            height: 270px;
+            background: linear-gradient(135deg, #fff2f4 0%, var(--blossom-pink) 100%);
+            border-radius: 50%;
+            z-index: 2;
+            top: 12%;
+            left: 6%;
+            filter: blur(1px);
+        }
+
+        .geo-layer-olive-bar {
+            position: absolute;
+            width: 150px;
+            height: 290px;
+            background-color: var(--stem-olive);
+            border-radius: 80px;
+            transform: rotate(-38deg);
+            z-index: 2;
+            bottom: 4%;
+            right: 5%;
+            opacity: 0.7;
+        }
+
+        /* 寃뱀묠 �덉씠�� 2: �쇰윭�ㅽ듃 �ㅼ뿉 ��諛��섍쾶 源붾━�� 珥덈��� �몃━�� 硫붿씤 �띿뒪�� */
+        .layered-text-base {
+            position: absolute;
+            width: 100%;
+            text-align: center;
+            z-index: 3;
+            pointer-events: none;
+        }
+
+        .layered-text-base .slogan-sub {
+            font-size: 1.05rem;
+            font-weight: 300;
+            letter-spacing: 0.6rem;
+            color: #5c5250;
+            margin-bottom: 4px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.03);
+        }
+
+        .layered-text-base .brand-main {
+            font-size: 4.3rem;
+            font-weight: 900;
+            line-height: 5rem;
+            color: var(--ink-black);
+            letter-spacing: -0.05rem;
+        }
+
+        /* 寃뱀묠 �덉씠�� 3: 湲��� �쒓��대뜲瑜� �リ퀬 �섏� �꾨㈃�� �꾩쟾�� 援먯감�섎뒗 踰싰퐙 �섎Т 媛�吏� SVG */
+        .layered-svg-overlay {
+            position: absolute;
+            width: 360px;
+            height: 360px;
+            z-index: 4;
+            transform: rotate(-7deg) translateY(15px);
+            filter: drop-shadow(10px 25px 35px rgba(229, 155, 168, 0.35));
+            pointer-events: none;
+        }
+
+        /* 泥쒕Ц 怨쇳븰 �듦퀎 湲곕컲 湲고썑 �곗씠�� �ㅽ듃由� 蹂대뱶 */
+        .astro-science-strip {
+            background-color: rgba(28, 22, 21, 0.04);
+            border: 1px dashed rgba(28, 22, 21, 0.2);
+            border-radius: 8px;
+            padding: 12px 14px;
+            margin-bottom: 16px;
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 10px;
+            z-index: 10;
+            position: relative;
+        }
+
+        .astro-node {
+            text-align: center;
+        }
+
+        .astro-node .node-lbl {
+            font-size: 0.65rem;
+            color: #7a6e6c;
+            font-weight: bold;
+            margin-bottom: 3px;
+        }
+
+        .astro-node .node-val {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--ink-black);
+            letter-spacing: 0.02rem;
+        }
+
+        /* �ъ뒪�� 理쒗븯�� 肄붿뼱 �뺣낫 �섏슦吏� */
+        .poster-bottom-housing {
+            position: relative;
+            z-index: 10;
+        }
+
+        .info-layout-table {
+            display: grid;
+            grid-template-columns: 1.15fr 0.85fr;
+            border-top: 2px solid var(--ink-black);
+            padding-top: 15px;
+            margin-bottom: 18px;
+        }
+
+        .table-cell .cell-title {
+            font-size: 0.7rem;
+            font-weight: 900;
+            color: var(--shadow-rose);
+            text-transform: uppercase;
+            letter-spacing: 0.12rem;
+            margin-bottom: 3px;
+        }
+
+        .table-cell .cell-value {
+            font-size: 1rem;
+            font-weight: 900;
+            color: var(--ink-black);
+            line-height: 1.4;
+        }
+
+        /* �섏씠�붾뱶 �≪뀡 踰꾪듉 */
+        .btn-action-gate {
+            width: 100%;
+            background-color: var(--ink-black);
+            color: var(--poster-cream);
+            border: none;
+            padding: 16px;
+            font-family: 'Noto Serif KR', serif;
+            font-size: 0.9rem;
+            font-weight: 600;
+            letter-spacing: 0.15rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .btn-action-gate:hover {
+            background-color: var(--shadow-rose);
+            color: var(--ink-black);
+            letter-spacing: 0.22rem;
+        }
+
+        /* ==========================================
+           SCREEN 2: �묐갑�� 留곹겕�� 異뺤젣 �명룷 GUI 蹂대뱶
+        ========================================== */
+        .detail-screen {
+            background-color: #120f0e;
+            transform: rotateX(-90deg) translateZ(420px); /* 3D �뺤쑁硫댁껜 濡� �덉씪 �쒕툕�ㅽ겕由� 諛곗튂 */
+        }
+
+        .detail-board-shell {
+            width: 100%;
+            max-width: 510px;
+            height: 100%;
+            max-height: 840px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 24px;
+            padding: 38px 26px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            color: #ece5dd;
+            backdrop-filter: blur(30px);
+            box-shadow: 0 40px 110px rgba(0,0,0,0.65);
+        }
+
+        .board-main-title h2 {
+            font-size: 1.7rem;
+            font-weight: 900;
+            color: var(--blossom-pink);
+            letter-spacing: -0.01rem;
+        }
+
+        .board-main-title p {
+            font-size: 0.85rem;
+            color: #8c817e;
+            margin-top: 3px;
+        }
+
+        /* �명룷洹몃옒�� �쒓컙�� 而⑦뀒�대꼫 */
+        .timeline-scroller {
+            margin: 22px 0;
+            display: flex;
+            flex-direction: column;
+            gap: 13px;
+            flex-grow: 1;
+            justify-content: center;
+        }
+
+        .timeline-item-strip {
+            display: flex;
+            background: rgba(255, 255, 255, 0.02);
+            border-left: 3px solid var(--blossom-pink);
+            padding: 13px 16px;
+            border-radius: 0 14px 14px 0;
+            transition: background 0.3s;
+        }
+
+        .timeline-item-strip:hover {
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .strip-time {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--blossom-pink);
+            width: 65px;
+            display: flex;
+            align-items: center;
+        }
+
+        .strip-details .t-title {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #ffffff;
+        }
+
+        .strip-details .t-desc {
+            font-size: 0.8rem;
+            color: #9c918e;
+            margin-top: 3px;
+            line-height: 1.4;
+        }
+
+        /* �뚮┝ 移대뱶 洹몃━�� */
+        .meta-notice-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 22px;
+        }
+
+        .notice-card-node {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            padding: 14px;
+            border-radius: 12px;
+        }
+
+        .notice-card-node h4 {
+            font-size: 0.8rem;
+            font-weight: 900;
+            color: #e5dec9;
+            margin-bottom: 4px;
+        }
+
+        .notice-card-node p {
+            font-size: 0.75rem;
+            color: #8c817e;
+            line-height: 1.4;
+        }
+
+        /* �묐갑�� 留곹겕 蹂듦� �몃━嫄� GUI 踰꾪듉 */
+        .btn-return-gate {
+            width: 100%;
+            background: transparent;
+            color: var(--blossom-pink);
+            border: 1px solid var(--blossom-pink);
+            padding: 15px;
+            font-family: 'Noto Serif KR', serif;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-return-gate:hover {
+            background: rgba(255, 177, 191, 0.08);
+            letter-spacing: 0.08rem;
+        }
+
+        /* 紐⑤컮�� 移쒗솕�� �먯뿰�ㅻ윭�� 踰싰퐙�� �④낵 */
+.canvas-petal {
+    position: absolute;
+    top: -30px;
+    left: 0;
+    width: 12px;
+    height: 9px;
+    background: linear-gradient(135deg, #fff7f8 0%, #ffb1bf 65%, #e59ba8 100%);
+    border-radius: 100% 0 100% 100%;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 5;
+    transform-origin: 50% 50%;
+    animation: naturalPetalFall linear forwards;
+    will-change: transform, opacity;
+}
+
+@keyframes naturalPetalFall {
+    0% {
+        transform: translate3d(0, -20px, 0) rotate(0deg);
+        opacity: 0;
+    }
+    10% {
+        opacity: 0.82;
+    }
+    50% {
+        transform: translate3d(var(--sway, 35px), 390px, 0) rotate(180deg);
+        opacity: 0.88;
+    }
+    90% {
+        opacity: 0.68;
+    }
+    100% {
+        transform: translate3d(calc(var(--sway, 35px) * -0.7), 850px, 0) rotate(390deg);
+        opacity: 0;
+    }
+}
+
+@media (max-width: 600px) {
+    .canvas-petal {
+        transform: scale(.8);
+    }
+}
+
+</style>
+
+<style>
+/* 紐⑤컮�� 理쒖쟻�� */
+html, body {
+    min-height: 100%;
+    overflow: auto;
+    overflow-x: hidden;
+}
+
+body {
+    -webkit-text-size-adjust: 100%;
+}
+
+.perspective-viewport {
+    min-height: 100dvh;
+    height: auto;
+    perspective: 1200px;
+}
+
+.gui-motion-stage {
+    min-height: 100dvh;
+    height: auto;
+}
+
+.screen {
+    min-height: 100dvh;
+    height: auto;
+    padding: 12px;
+    align-items: flex-start;
+    overflow-y: auto;
+}
+
+.poster-screen {
+    min-height: 100dvh;
+    padding: 12px;
+}
+
+.poster-canvas {
+    width: min(100%, 510px);
+    min-height: calc(100dvh - 24px);
+    height: auto;
+    max-height: none;
+    padding: 26px 20px;
+}
+
+.bg-giant-typography {
+    font-size: clamp(7rem, 35vw, 12rem);
+    right: -25%;
+}
+
+.overlap-art-matrix {
+    height: clamp(300px, 48vh, 410px);
+    margin: 10px 0;
+}
+
+.geo-layer-pink-circle {
+    width: min(270px, 58vw);
+    height: min(270px, 58vw);
+}
+
+.geo-layer-olive-bar {
+    width: min(150px, 30vw);
+    height: min(290px, 50vw);
+}
+
+.layered-text-base .slogan-sub {
+    font-size: clamp(.7rem, 3.2vw, 1.05rem);
+    letter-spacing: clamp(.18rem, 2.5vw, .6rem);
+}
+
+.layered-text-base .brand-main {
+    font-size: clamp(2.5rem, 12vw, 4.3rem);
+    line-height: 1.18;
+}
+
+.layered-svg-overlay {
+    width: min(360px, 82vw);
+    height: min(360px, 82vw);
+}
+
+.astro-science-strip {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 5px;
+    padding: 10px 6px;
+}
+
+.astro-node .node-lbl {
+    font-size: clamp(.52rem, 2.3vw, .65rem);
+}
+
+.astro-node .node-val {
+    font-size: clamp(.68rem, 3vw, .85rem);
+}
+
+.info-layout-table {
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+}
+
+.table-cell .cell-value,
+.table-cell .cell-content {
+    font-size: clamp(.78rem, 3.5vw, 1rem);
+}
+
+.btn-action-gate,
+.btn-return-gate {
+    min-height: 50px;
+    padding: 13px 10px;
+    font-size: clamp(.75rem, 3.5vw, .9rem);
+}
+
+.detail-screen {
+    min-height: 100dvh;
+    padding: 12px;
+}
+
+.detail-board-shell {
+    width: min(100%, 510px);
+    min-height: calc(100dvh - 24px);
+    height: auto;
+    max-height: none;
+    padding: 26px 18px;
+    border-radius: 18px;
+}
+
+.board-main-title h2 {
+    font-size: clamp(1.3rem, 7vw, 1.7rem);
+}
+
+.timeline-scroller {
+    margin: 16px 0;
+    gap: 9px;
+    justify-content: flex-start;
+}
+
+.timeline-item-strip {
+    padding: 11px 10px;
+}
+
+.strip-time {
+    width: 55px;
+    min-width: 55px;
+    font-size: .82rem;
+}
+
+.strip-details .t-title {
+    font-size: .84rem;
+}
+
+.strip-details .t-desc {
+    font-size: .72rem;
+}
+
+.meta-notice-grid {
+    gap: 8px;
+    margin-bottom: 14px;
+}
+
+.notice-card-node {
+    padding: 10px;
+}
+
+.notice-card-node h4 {
+    font-size: .72rem;
+}
+
+.notice-card-node p {
+    font-size: .68rem;
+}
+
+/* �묒� �ㅻ쭏�명룿 */
+@media (max-width: 380px) {
+    .poster-canvas {
+        padding: 22px 15px;
+    }
+
+    .overlap-art-matrix {
+        height: 300px;
+    }
+
+    .info-layout-table {
+        grid-template-columns: 1fr;
+    }
+
+    .info-layout-table .table-cell[style] {
+        padding-left: 0 !important;
+        border-left: 0 !important;
+        border-top: 1px solid var(--ink-black);
+        padding-top: 10px;
+        margin-top: 5px;
+    }
+
+    .meta-notice-grid {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+
+
+<style id="extra-animations">
+/* ===== �ъ뒪�� �낆옣 �좊땲硫붿씠�� ===== */
+.poster-canvas {
+    animation: posterEnter 1s cubic-bezier(.22,1,.36,1) both;
+}
+
+@keyframes posterEnter {
+    from {
+        opacity: 0;
+        transform: translateY(28px) scale(.96);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* �곷떒 �뺣낫媛� �쒖꽌��濡� �섑��� */
+.poster-top-meta {
+    animation: fadeSlideDown .8s .2s ease both;
+}
+
+.overlap-art-matrix {
+    animation: artReveal 1.2s .35s cubic-bezier(.22,1,.36,1) both;
+}
+
+.astro-science-strip {
+    animation: fadeSlideUp .8s .65s ease both;
+}
+
+.poster-bottom-housing {
+    animation: fadeSlideUp .8s .8s ease both;
+}
+
+@keyframes fadeSlideDown {
+    from { opacity: 0; transform: translateY(-16px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeSlideUp {
+    from { opacity: 0; transform: translateY(18px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes artReveal {
+    from {
+        opacity: 0;
+        transform: scale(.82) rotate(-4deg);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) rotate(0);
+    }
+}
+
+/* 湲고븯�� �붿냼�� �먮┛ ��吏곸엫 */
+.geo-layer-pink-circle {
+    animation: circleFloat 5s ease-in-out infinite alternate;
+}
+
+.geo-layer-olive-bar {
+    animation: barFloat 6s ease-in-out infinite alternate;
+}
+
+@keyframes circleFloat {
+    from { transform: translate(0, 0) scale(1); }
+    to { transform: translate(8px, -10px) scale(1.035); }
+}
+
+@keyframes barFloat {
+    from { transform: rotate(-38deg) translate(0, 0); }
+    to { transform: rotate(-34deg) translate(-6px, 8px); }
+}
+
+/* 踰싰퐙 �섎춪媛�吏�媛� �꾩＜ �댁쭩 �붾뱾由� */
+.layered-svg-overlay {
+    animation: branchSway 5s ease-in-out infinite alternate;
+}
+
+@keyframes branchSway {
+    from { transform: rotate(-7deg) translateY(15px); }
+    to { transform: rotate(-4deg) translateY(11px); }
+}
+
+/* 踰꾪듉�� ������ 媛뺤“ �④낵 */
+.btn-action-gate {
+    animation: buttonPulse 3s 2s ease-in-out infinite;
+}
+
+@keyframes buttonPulse {
+    0%, 70%, 100% { transform: scale(1); }
+    80% { transform: scale(1.018); }
+    85% { transform: scale(1); }
+}
+
+/* �곸꽭 �붾㈃ �깆옣 �붿냼 */
+.detail-board-shell {
+    animation: detailEnter .9s cubic-bezier(.22,1,.36,1) both;
+}
+
+@keyframes detailEnter {
+    from {
+        opacity: 0;
+        transform: translateY(25px) scale(.97);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.timeline-item-strip {
+    animation: timelineIn .65s ease both;
+}
+
+.timeline-item-strip:nth-child(1) { animation-delay: .15s; }
+.timeline-item-strip:nth-child(2) { animation-delay: .25s; }
+.timeline-item-strip:nth-child(3) { animation-delay: .35s; }
+.timeline-item-strip:nth-child(4) { animation-delay: .45s; }
+
+@keyframes timelineIn {
+    from {
+        opacity: 0;
+        transform: translateX(25px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* 紐⑥뀡 以꾩씠湲� �ㅼ젙�� �ъ슜�섎뒗 湲곌린�먯꽌�� �좊땲硫붿씠�� 理쒖냼�� */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .01ms !important;
+    }
+}
+</style>
+
+</head>
+<body>
+
+    <div class="perspective-viewport">
+        <div class="gui-motion-stage" id="masterStage">
+            
+            <!-- FRAME 1: 硫붿씤 �ъ뒪�� �ㅽ겕由� -->
+            <section class="screen poster-screen">
+                <div class="poster-canvas">
+                    <div class="bg-giant-typography">SAKURA</div>
+
+                    <div class="poster-top-meta">
+                        <div class="meta-count">��25�� �뺣┝ 濡쒖뺄 ��異뺤젣</div>
+                        <div class="meta-season">SPRING 2027</div>
+                    </div>
+
+                    <!-- �ㅻ쾭�� 湲고븯�� �덉씠�� �⑺꽣 -->
+                    <div class="overlap-art-matrix">
+                        <div class="geo-layer-pink-circle"></div>
+                        <div class="geo-layer-olive-bar"></div>
+
+                        <!-- 諛깃렇�쇱슫�� �쒓� �띿뒪�� �덉씠�� (�ㅼ뿉 源붾┝) -->
+                        <div class="layered-text-base">
+                            <p class="slogan-sub">媛묒쿇�� �먮Ⅴ�� �곕텇�띾튆 �ㅻ젞</p>
+                            <h1 class="brand-main">�뺣┝��<br>踰싰퐙異뺤젣</h1>
+                        </div>
+
+                        <!-- �꾧꼍 李⑤떒 �덉씠��: 湲��� �욎쑝濡� �뚭퀬�쒕뒗 怨좎젙諛� SVG �쇰윭�ㅽ듃 -->
+                        <svg class="layered-svg-overlay" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <!-- �섎춪媛�吏� �쒕줈�� -->
+                            <path d="M10 88 C 30 75, 48 52, 76 42 C 84 38, 92 25, 86 16" stroke="#3b302a" stroke-width="2.6" stroke-linecap="round"/>
+                            <path d="M42 56 C 48 44, 62 42, 68 32" stroke="#3b302a" stroke-width="1.8" stroke-linecap="round"/>
+                            <path d="M26 70 C 20 58, 34 52, 36 40" stroke="#3b302a" stroke-width="1.4" stroke-linecap="round"/>
+                            <!-- 硫붿씤 寃뱀묠 苑껋넚�� 1 -->
+                            <g transform="translate(74, 42)">
+                                <path d="M0 0 C-12 -16, 12 -16, 0 0 Z" fill="#fff2f4"/>
+                                <path d="M0 0 C16 -12, 16 12, 0 0 Z" fill="#ffccd5"/>
+                                <path d="M0 0 C12 16, -12 16, 0 0 Z" fill="#ffb1bf"/>
+                                <path d="M0 0 C-16 12, -16 -12, 0 0 Z" fill="#ffb1bf"/>
+                                <path d="M0 0 C-10 -14, -2 -16, 0 0 Z" fill="#fff9fa"/>
+                                <circle cx="0" cy="0" r="2.8" fill="#e59ba8"/>
+                                <circle cx="0" cy="0" r="1" fill="#fcd170"/>
+                            </g>
+                            <!-- 苑껋넚�� 2 -->
+                            <g transform="translate(42, 56)">
+                                <path d="M0 0 C-8 -12, 8 -12, 0 0 Z" fill="#ffccd5"/>
+                                <path d="M0 0 C12 -8, 12 8, 0 0 Z" fill="#ffb1bf"/>
+                                <path d="M0 0 C 8 12, -8 12, 0 0 Z" fill="#ffccd5"/>
+                                <path d="M0 0 C-12 8, -12 -8, 0 0 Z" fill="#fff2f4"/>
+                                <circle cx="0" cy="0" r="2" fill="#e59ba8"/>
+                            </g>
+                            <!-- 苑껋넚�� 3 -->
+                            <g transform="translate(68, 32)">
+                                <path d="M0 0 C-6 -10, 6 -10, 0 0 Z" fill="#fff9fa"/>
+                                <path d="M0 0 C10 -6, 10 6, 0 0 Z" fill="#ffccd5"/>
+                                <path d="M0 0 C 6 10, -6 10, 0 0 Z" fill="#ffb1bf"/>
+                                <path d="M0 0 C-10 6, -10 -6, 0 0 Z" fill="#ffccd5"/>
+                                <circle cx="0" cy="0" r="1.5" fill="#d07e8c"/>
+                            </g>
+                        </svg>
+                    </div>
+
+                    <!-- 泥쒕Ц 湲곗긽 �곗궛 寃곌낵 �ㅽ듃由� 蹂대뱶 諛곗튂 -->
+                    <div class="astro-science-strip">
+                        <div class="astro-node">
+                            <div class="node-lbl">��截� �쒖뼇 �⑥쨷怨좊룄</div>
+                            <div class="node-val">61.2째</div>
+                        </div>
+                        <div class="astro-node">
+                            <div class="node-lbl">�� ��쓽 珥� 湲몄씠</div>
+                            <div class="node-val">12h 45m</div>
+                        </div>
+                        <div class="astro-node">
+                            <div class="node-lbl">�뙵 �덉륫 �뱀씪湲곗삩</div>
+                            <div class="node-val">16.5 째C</div>
+                        </div>
+                    </div>
+
+                    <!-- 濡쒖뼱 硫붿씤 ���� �뚯씠釉� 留곹겕 �� -->
+                    <div class="poster-bottom-housing">
+                        <div class="info-layout-table">
+                            <div class="table-cell">
+                                <div class="cell-title">�뱟 Date & Time</div>
+                                <div class="cell-content">2027. 04. 10 (��)<br>AM 11:00 - PM 21:30</div>
+                            </div>
+                            <div class="table-cell" style="padding-left: 14px; border-left: 1.5px solid var(--ink-black);">
+                                <div class="cell-title">�뱧 Location</div>
+                                <div class="cell-content">���� �쒓뎄 �뺣┝��<br>媛묒쿇 怨좎닔遺�吏� �쇱썝</div>
+                            </div>
+                        </div>
+                        <button class="btn-action-gate" onclick="controlGUI(true)">
+                            異뺤젣 �꾨줈洹몃옩 �먯꽭�� �뚯븘蹂닿린
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"></line><polyline points="19 12 12 19 5 12"></polyline></svg>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- FRAME 2: �곸꽭 �뺣낫 �명꽣�숉떚釉� GUI �ㅽ겕由� -->
+            <section class="screen detail-screen">
+                <div class="detail-board-shell">
+                    <div class="board-main-title">
+                        <h2>PROGRAM TIME-TABLE</h2>
+                        <p>2027 ���� �뺣┝�� 踰싰퐙異뺤젣 �몃� 怨듭떇 ���꾨씪��</p>
+                    </div>
+
+                    <div class="timeline-scroller">
+                        <div class="timeline-item-strip">
+                            <div class="strip-time">11:00</div>
+                            <div class="strip-details">
+                                <div class="t-title">媛묒쿇 踰싰퐙湲� 遊꾨튆 嫄룰린 ����</div>
+                                <div class="t-desc">�뺣┝�� 臾댁�媛쒕떎由� �섎� 愿묒옣�먯꽌 �⑸궇由щ뒗 踰싰퐙 �곕꼸湲� 肄붿뒪瑜� �� 二쇰�怨� �④퍡 嫄룸뒗 媛쒕쭑 �ㅽ봽��</div>
+                            </div>
+                        </div>
+                        <div class="timeline-item-strip">
+                            <div class="strip-time">14:00</div>
+                            <div class="strip-details">
+                                <div class="t-title">�섎컠�� 二쇰� �먯튂 �뷀빀 寃쎌뿰</div>
+                                <div class="t-desc">�뺣┝�� �ㅻЦ�� 怨듬룞泥� 諛대뱶 諛� �먯튂�쇳꽣 �꾩뒪 �고빀�뚭� 李몄뿬�섎뒗 �κ꺼�� 二쇰� 二쇰룄�� �숈븘由� �쒕쭏��</div>
+                            </div>
+                        </div>
+                        <div class="timeline-item-strip">
+                            <div class="strip-time">18:30</div>
+                            <div class="strip-details">
+                                <div class="t-title">�쇨컙 誘몃뵒�� �뚯궗�� �먮벑��</div>
+                                <div class="t-desc">�쇰ぐ �쒓컖�� 留욎텣 LED �ㅻ쾭�� 鍮� �곕꼸 �쇱젣 由대젅�� 媛쒕쭑 諛� �덉씠�� 議곕챸 媛��숈떇</div>
+                            </div>
+                        </div>
+                        <div class="timeline-item-strip">
+                            <div class="strip-time">20:30</div>
+                            <div class="strip-details">
+                                <div class="t-title">媛묒쿇 �뚯븙 �숉솕/遺덇퐙 �щ（利덉눥</div>
+                                <div class="t-desc">遊꾨컮�뚯쓽 �뚯븙 �좎쑉怨� �숆린�붾릺�� �뺣┝�� 媛묒쿇 媛뺣� �섎뒛�� �붾젮�섍쾶 寃뱀퀜 梨꾩슦�� 珥덈��� 移쒗솚寃� �덉씠�� 遺덇퐙��</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="meta-notice-grid">
+                        <div class="notice-card-node">
+                            <h4>�뙼 �꾩냼 以묐┰ �먯퐫 �쒗깮</h4>
+                            <p>異뺤젣 �뱀씪 媛쒖씤 ��釉붾윭/�ㅽ쉶�� 而듭쓣 吏�李명븯�� 諛⑸Ц �� �꾩옣 �낆젏 �몃뱶�몃윮 �� 留ㅼ옣 �뚮즺瑜� 10% 利됱떆 �좎씤 留덉씪由ъ� �곸슜.</p>
+                        </div>
+                        <div class="notice-card-node">
+                            <h4>�슅 二쇱감쨌援먰넻 �꾩떆 �듭젣</h4>
+                            <p>�뺣┝珥덈벑�숆탳 ���대룞�� 諛� �섎컠�� 怨듭쁺二쇱감�� 臾대즺 媛쒕갑. �뱀씪 媛묒쿇濡� �쇰� 援ш컙 鍮꾨�移� 李� �녿뒗 嫄곕━ �댁쁺.</p>
+                        </div>
+                    </div>
+
+                    <button class="btn-return-gate" onclick="controlGUI(false)">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="19" x2="12" y2="5"></line><polyline points="5 12 12 5 19 12"></polyline></svg>
+                        &nbsp;�꾨㈃ �꾪듃 �ъ뒪�� �붾㈃�쇰줈 �뚯븘媛�湲�
+                    </button>
+                </div>
+            </section>
+
+        </div>
+    </div>
+
+    <script>
+        const stageContainer = document.getElementById('masterStage');
+
+        // [GUI �명꽣�숈뀡 �붿쭊] �묐갑�� �좉� 留곹겕 �몃옖吏���
+        function controlGUI(moveToDetail) {
+            if(moveToDetail) {
+                stageContainer.classList.add('shifted');
+            } else {
+                stageContainer.classList.remove('shifted');
+            }
+        }
+
+        // �ъ뒪�� �대��먯꽌 醫뚯슦濡� �댁쭩 �붾뱾由щŉ �⑥뼱吏��� �먯뿰�ㅻ윭�� 踰싰퐙��
+        function spawnCanvasPetal() {
+            const canvasFrame = document.querySelector('.poster-canvas');
+            if (!canvasFrame || stageContainer.classList.contains('shifted')) return;
+
+            const petal = document.createElement('div');
+            petal.classList.add('canvas-petal');
+
+            // �ш린�� �꾩튂瑜� 議곌툑�� �ㅻⅤ寃� �섏뿬 諛섎났�섎뒗 �먮굦�� 以꾩엫
+            const size = Math.random() * 7 + 7;
+            const duration = Math.random() * 3.5 + 5.5;
+            const sway = (Math.random() * 90 - 45).toFixed(0);
+
+            petal.style.width = `${size + 3}px`;
+            petal.style.height = `${size}px`;
+            petal.style.left = `${Math.random() * 94 + 3}%`;
+            petal.style.animationDuration = `${duration}s`;
+            petal.style.setProperty('--sway', `${sway}px`);
+            petal.style.animationDelay = `${Math.random() * 0.4}s`;
+            petal.style.transform = `rotate(${Math.random() * 360}deg)`;
+
+            canvasFrame.appendChild(petal);
+
+            setTimeout(() => petal.remove(), (duration + 0.6) * 1000);
+        }
+
+        // �덈Т 鍮좊Ⅴ寃� �잛븘吏�吏� �딅룄濡� �앹꽦 媛꾧꺽�� �섎┝
+        setInterval(spawnCanvasPetal, 420);
+    </script>
+</body>
+</html>
