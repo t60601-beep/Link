@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2027 대전 정림동 벚꽃축제 공식 그래픽 아트 포스터</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Noto+Serif+KR:wght@300;600;900&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-deep: #0b0908;
+            --poster-cream: #f4ede2;
+            --blossom-pink: #ffb1bf;
+            --shadow-rose: #e59ba8;
+            --ink-black: #1c1615;
+            --stem-olive: #cbd6cd;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body, html {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: var(--bg-deep);
+            font-family: 'Noto Serif KR', serif;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* 3D 영화적 GUI 가동 뷰포트 */
+        .perspective-viewport {
+            width: 100%;
+            height: 100%;
+            perspective: 2000px;
+            position: relative;
+        }
+
+        /* 상호작용 체인이 걸리는 GUI 무빙 컨테이너 */
+        .gui-motion-stage {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            transform-style: preserve-3d;
+            transition: transform 1.4s cubic-bezier(0.76, 0, 0.24, 1);
+        }
+
+        /* [GUI 이동 명세] 3D 회전과 원근 수축이 결합된 완벽한 화면 전환 상태 */
+        .gui-motion-stage.shifted {
+            transform: translateZ(-400px) rotateX(95deg) translateY(-50%);
+        }
+
+        .screen {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            backface-visibility: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        /* ==========================================
+           SCREEN 1: 리얼 레이어드 디자인 아트 포스터
+        ========================================== */
+        .poster-screen {
+            background: linear-gradient(135deg, #161211 0%, #0d0a09 100%);
+        }
+
+        .poster-canvas {
+            width: 100%;
+            max-width: 510px;
+            height: 100%;
+            max-height: 840px;
+            background-color: var(--poster-cream);
+            box-shadow: 0 45px 100px rgba(0,0,0,0.5), inset 0 0 40px rgba(0,0,0,0.02);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 42px 34px;
+            border: 1px solid rgba(255,255,255,0.03);
+        }
+
+        /* 레이어드 아방가르드 연출을 위한 백그라운드 거대 타이포 */
+        .bg-giant-typography {
+            position: absolute;
+            font-family: 'Cinzel', serif;
+            font-size: 15rem;
+            font-weight: 900;
+            color: rgba(255, 177, 191, 0.12);
+            line-height: 0.7;
+            top: 8%;
+            right: -15%;
+            user-select: none;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .poster-top-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1.5px solid var(--ink-black);
+            padding-bottom: 10px;
+            z-index: 10;
+        }
+
+        .meta-count {
+            font-size: 0.75rem;
+            font-weight: 900;
+            letter-spacing: 0.3rem;
+            color: var(--ink-black);
+        }
+
+        .meta-season {
+            font-family: 'Cinzel', serif;
+            font-size: 0.9rem;
+            font-weight: 900;
+            color: var(--shadow-rose);
+            letter-spacing: 0.1rem;
+        }
+
+        /* ★ 초고고도 레이어드 오버랩 핵심 구역 */
+        .overlap-art-matrix {
+            position: relative;
+            width: 100%;
+            height: 410px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 15px 0;
+        }
+
+        /* 겹침 레이어 1: 기하학 추상 컬러 칩 배치 */
+        .geo-layer-pink-circle {
+            position: absolute;
+            width: 270px;
+            height: 270px;
+            background: linear-gradient(135deg, #fff2f4 0%, var(--blossom-pink) 100%);
+            border-radius: 50%;
+            z-index: 2;
+            top: 12%;
+            left: 6%;
+            filter: blur(1px);
+        }
+
+        .geo-layer-olive-bar {
+            position: absolute;
+            width: 150px;
+            height: 290px;
+            background-color: var(--stem-olive);
+            border-radius: 80px;
+            transform: rotate(-38deg);
+            z-index: 2;
+            bottom: 4%;
+            right: 5%;
+            opacity: 0.7;
+        }
+
+        /* 겹침 레이어 2: 일러스트 뒤에 은밀하게 깔리는 초대형 세리프 메인 텍스트 */
+        .layered-text-base {
+            position: absolute;
+            width: 100%;
+            text-align: center;
+            z-index: 3;
+            pointer-events: none;
+        }
+
+        .layered-text-base .slogan-sub {
+            font-size: 1.05rem;
+            font-weight: 300;
+            letter-spacing: 0.6rem;
+            color: #5c5250;
+            margin-bottom: 4px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.03);
+        }
+
+        .layered-text-base .brand-main {
+            font-size: 4.3rem;
+            font-weight: 900;
+            line-height: 5rem;
+            color: var(--ink-black);
+            letter-spacing: -0.05rem;
+        }
+
+        /* 겹침 레이어 3: 글자 한가운데를 뚫고 나와 전면에 완전히 교차하는 벚꽃 나무 가지 SVG */
+        .layered-svg-overlay {
+            position: absolute;
+            width: 360px;
+            height: 360px;
+            z-index: 4;
+            transform: rotate(-7deg) translateY(15px);
+            filter: drop-shadow(10px 25px 35px rgba(229, 155, 168, 0.35));
+            pointer-events: none;
+        }
+
+        /* 천문 과학 통계 기반 기후 데이터 스트립 보드 */
+        .astro-science-strip {
+            background-color: rgba(28, 22, 21, 0.04);
+            border: 1px dashed rgba(28, 22, 21, 0.2);
+            border-radius: 8px;
+            padding: 12px 14px;
+            margin-bottom: 16px;
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 10px;
+            z-index: 10;
+            position: relative;
+        }
+
+        .astro-node {
+            text-align: center;
+        }
+
+        .astro-node .node-lbl {
+            font-size: 0.65rem;
+            color: #7a6e6c;
+            font-weight: bold;
+            margin-bottom: 3px;
+        }
+
+        .astro-node .node-val {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--ink-black);
+            letter-spacing: 0.02rem;
+        }
+
+        /* 포스터 최하단 코어 정보 하우징 */
+        .poster-bottom-housing {
+            position: relative;
+            z-index: 10;
+        }
+
+        .info-layout-table {
+            display: grid;
+            grid-template-columns: 1.15fr 0.85fr;
+            border-top: 2px solid var(--ink-black);
+            padding-top: 15px;
+            margin-bottom: 18px;
+        }
+
+        .table-cell .cell-title {
+            font-size: 0.7rem;
+            font-weight: 900;
+            color: var(--shadow-rose);
+            text-transform: uppercase;
+            letter-spacing: 0.12rem;
+            margin-bottom: 3px;
+        }
+
+        .table-cell .cell-value {
+            font-size: 1rem;
+            font-weight: 900;
+            color: var(--ink-black);
+            line-height: 1.4;
+        }
+
+        /* 하이엔드 액션 버튼 */
+        .btn-action-gate {
+            width: 100%;
+            background-color: var(--ink-black);
+            color: var(--poster-cream);
+            border: none;
+            padding: 16px;
+            font-family: 'Noto Serif KR', serif;
+            font-size: 0.9rem;
+            font-weight: 600;
+            letter-spacing: 0.15rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .btn-action-gate:hover {
+            background-color: var(--shadow-rose);
+            color: var(--ink-black);
+            letter-spacing: 0.22rem;
+        }
+
+        /* ==========================================
+           SCREEN 2: 양방향 링크형 축제 인포 GUI 보드
+        ========================================== */
+        .detail-screen {
+            background-color: #120f0e;
+            transform: rotateX(-90deg) translateZ(420px); /* 3D 정육면체 롤 레일 서브스크린 배치 */
+        }
+
+        .detail-board-shell {
+            width: 100%;
+            max-width: 510px;
+            height: 100%;
+            max-height: 840px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 24px;
+            padding: 38px 26px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            color: #ece5dd;
+            backdrop-filter: blur(30px);
+            box-shadow: 0 40px 110px rgba(0,0,0,0.65);
+        }
+
+        .board-main-title h2 {
+            font-size: 1.7rem;
+            font-weight: 900;
+            color: var(--blossom-pink);
+            letter-spacing: -0.01rem;
+        }
+
+        .board-main-title p {
+            font-size: 0.85rem;
+            color: #8c817e;
+            margin-top: 3px;
+        }
+
+        /* 인포그래픽 시간표 컨테이너 */
+        .timeline-scroller {
+            margin: 22px 0;
+            display: flex;
+            flex-direction: column;
+            gap: 13px;
+            flex-grow: 1;
+            justify-content: center;
+        }
+
+        .timeline-item-strip {
+            display: flex;
+            background: rgba(255, 255, 255, 0.02);
+            border-left: 3px solid var(--blossom-pink);
+            padding: 13px 16px;
+            border-radius: 0 14px 14px 0;
+            transition: background 0.3s;
+        }
+
+        .timeline-item-strip:hover {
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .strip-time {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--blossom-pink);
+            width: 65px;
+            display: flex;
+            align-items: center;
+        }
+
+        .strip-details .t-title {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #ffffff;
+        }
+
+        .strip-details .t-desc {
+            font-size: 0.8rem;
+            color: #9c918e;
+            margin-top: 3px;
+            line-height: 1.4;
+        }
+
+        /* 알림 카드 그리드 */
+        .meta-notice-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 22px;
+        }
+
+        .notice-card-node {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            padding: 14px;
+            border-radius: 12px;
+        }
+
+        .notice-card-node h4 {
+            font-size: 0.8rem;
+            font-weight: 900;
+            color: #e5dec9;
+            margin-bottom: 4px;
+        }
+
+        .notice-card-node p {
+            font-size: 0.75rem;
+            color: #8c817e;
+            line-height: 1.4;
+        }
+
+        /* 양방향 링크 복귀 트리거 GUI 버튼 */
+        .btn-return-gate {
+            width: 100%;
+            background: transparent;
+            color: var(--blossom-pink);
+            border: 1px solid var(--blossom-pink);
+            padding: 15px;
+            font-family: 'Noto Serif KR', serif;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-return-gate:hover {
+            background: rgba(255, 177, 191, 0.08);
+            letter-spacing: 0.08rem;
+        }
+
+        /* 포스터 캔버스 경계선 내부 제한형 벚꽃 스포너 입체 소스 */
+        .canvas-petal {
+            position: absolute;
+            background: linear-gradient(135deg, #ffeef1, #ff9eb2);
+            border-radius: 120px 0px 120px 120px;
+            opacity: 0;
+            pointer-events: none;
+            z-index: 5;
+            animation: boundaryFall linear infinite;
+        }
+
+        @keyframes boundaryFall {
+            0% {
+                transform: translateY(-25px) translateX(0) rotate(0deg);
+                opacity: 0;
+            }
+            15% { opacity: 0.85; }
+            90% { opacity: 0.85; }
+            100% {
+                transform: translateY(850px) translateX(-160px) rotate(410deg);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="perspective-viewport">
+        <div class="gui-motion-stage" id="masterStage">
+            
+            <!-- FRAME 1: 메인 포스터 스크린 -->
+            <section class="screen poster-screen">
+                <div class="poster-canvas">
+                    <div class="bg-giant-typography">SAKURA</div>
+
+                    <div class="poster-top-meta">
+                        <div class="meta-count">제25회 정림 로컬 대축제</div>
+                        <div class="meta-season">SPRING 2027</div>
+                    </div>
+
+                    <!-- 오버랩 기하학 레이어 팩터 -->
+                    <div class="overlap-art-matrix">
+                        <div class="geo-layer-pink-circle"></div>
+                        <div class="geo-layer-olive-bar"></div>
+
+                        <!-- 백그라운드 한글 텍스트 레이어 (뒤에 깔림) -->
+                        <div class="layered-text-base">
+                            <p class="slogan-sub">갑천을 흐르는 연분홍빛 설렘</p>
+                            <h1 class="brand-main">정림동<br>벚꽃축제</h1>
+                        </div>
+
+                        <!-- 전경 차단 레이어: 글자 앞으로 파고드는 고정밀 SVG 일러스트 -->
+                        <svg class="layered-svg-overlay" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <!-- 나뭇가지 드로잉 -->
+                            <path d="M10 88 C 30 75, 48 52, 76 42 C 84 38, 92 25, 86 16" stroke="#3b302a" stroke-width="2.6" stroke-linecap="round"/>
+                            <path d="M42 56 C 48 44, 62 42, 68 32" stroke="#3b302a" stroke-width="1.8" stroke-linecap="round"/>
+                            <path d="M26 70 C 20 58, 34 52, 36 40" stroke="#3b302a" stroke-width="1.4" stroke-linecap="round"/>
+                            <!-- 메인 겹침 꽃송이 1 -->
+                            <g transform="translate(74, 42)">
+                                <path d="M0 0 C-12 -16, 12 -16, 0 0 Z" fill="#fff2f4"/>
+                                <path d="M0 0 C16 -12, 16 12, 0 0 Z" fill="#ffccd5"/>
+                                <path d="M0 0 C12 16, -12 16, 0 0 Z" fill="#ffb1bf"/>
+                                <path d="M0 0 C-16 12, -16 -12, 0 0 Z" fill="#ffb1bf"/>
+                                <path d="M0 0 C-10 -14, -2 -16, 0 0 Z" fill="#fff9fa"/>
+                                <circle cx="0" cy="0" r="2.8" fill="#e59ba8"/>
+                                <circle cx="0" cy="0" r="1" fill="#fcd170"/>
+                            </g>
+                            <!-- 꽃송이 2 -->
+                            <g transform="translate(42, 56)">
+                                <path d="M0 0 C-8 -12, 8 -12, 0 0 Z" fill="#ffccd5"/>
+                                <path d="M0 0 C12 -8, 12 8, 0 0 Z" fill="#ffb1bf"/>
+                                <path d="M0 0 C 8 12, -8 12, 0 0 Z" fill="#ffccd5"/>
+                                <path d="M0 0 C-12 8, -12 -8, 0 0 Z" fill="#fff2f4"/>
+                                <circle cx="0" cy="0" r="2" fill="#e59ba8"/>
+                            </g>
+                            <!-- 꽃송이 3 -->
+                            <g transform="translate(68, 32)">
+                                <path d="M0 0 C-6 -10, 6 -10, 0 0 Z" fill="#fff9fa"/>
+                                <path d="M0 0 C10 -6, 10 6, 0 0 Z" fill="#ffccd5"/>
+                                <path d="M0 0 C 6 10, -6 10, 0 0 Z" fill="#ffb1bf"/>
+                                <path d="M0 0 C-10 6, -10 -6, 0 0 Z" fill="#ffccd5"/>
+                                <circle cx="0" cy="0" r="1.5" fill="#d07e8c"/>
+                            </g>
+                        </svg>
+                    </div>
+
+                    <!-- 천문 기상 연산 결과 스트립 보드 배치 -->
+                    <div class="astro-science-strip">
+                        <div class="astro-node">
+                            <div class="node-lbl">☀️ 태양 남중고도</div>
+                            <div class="node-val">61.2°</div>
+                        </div>
+                        <div class="astro-node">
+                            <div class="node-lbl">⏳ 낮의 총 길이</div>
+                            <div class="node-val">12h 45m</div>
+                        </div>
+                        <div class="astro-node">
+                            <div class="node-lbl">🌸 예측 당일기온</div>
+                            <div class="node-val">16.5 °C</div>
+                        </div>
+                    </div>
+
+                    <!-- 로어 메인 타임 테이블 링크 랙 -->
+                    <div class="poster-bottom-housing">
+                        <div class="info-layout-table">
+                            <div class="table-cell">
+                                <div class="cell-title">📅 Date & Time</div>
+                                <div class="cell-content">2027. 04. 10 (토)<br>AM 11:00 - PM 21:30</div>
+                            </div>
+                            <div class="table-cell" style="padding-left: 14px; border-left: 1.5px solid var(--ink-black);">
+                                <div class="cell-title">📍 Location</div>
+                                <div class="cell-content">대전 서구 정림동<br>갑천 고수부지 일원</div>
+                            </div>
+                        </div>
+                        <button class="btn-action-gate" onclick="controlGUI(true)">
+                            축제 프로그램 자세히 알아보기
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"></line><polyline points="19 12 12 19 5 12"></polyline></svg>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- FRAME 2: 상세 정보 인터랙티브 GUI 스크린 -->
+            <section class="screen detail-screen">
+                <div class="detail-board-shell">
+                    <div class="board-main-title">
+                        <h2>PROGRAM TIME-TABLE</h2>
+                        <p>2027 대전 정림동 벚꽃축제 세부 공식 타임라인</p>
+                    </div>
+
+                    <div class="timeline-scroller">
+                        <div class="timeline-item-strip">
+                            <div class="strip-time">11:00</div>
+                            <div class="strip-details">
+                                <div class="t-title">갑천 벚꽃길 봄빛 걷기 대회</div>
+                                <div class="t-desc">정림동 무지개다리 하부 광장에서 흩날리는 벚꽃 터널길 코스를 전 주민과 함께 걷는 개막 오프닝</div>
+                            </div>
+                        </div>
+                        <div class="timeline-item-strip">
+                            <div class="strip-time">14:00</div>
+                            <div class="strip-details">
+                                <div class="t-title">수밋들 주민 자치 화합 경연</div>
+                                <div class="t-desc">정림동 다문화 공동체 밴드 및 자치센터 댄스 연합회가 참여하는 흥겨운 주민 주도형 동아리 한마당</div>
+                            </div>
+                        </div>
+                        <div class="timeline-item-strip">
+                            <div class="strip-time">18:30</div>
+                            <div class="strip-details">
+                                <div class="t-title">야간 미디어 파사드 점등식</div>
+                                <div class="t-desc">일몰 시각에 맞춘 LED 오버랩 빛 터널 일제 릴레이 개막 및 레이저 조명 가동식</div>
+                            </div>
+                        </div>
+                        <div class="timeline-item-strip">
+                            <div class="strip-time">20:30</div>
+                            <div class="strip-details">
+                                <div class="t-title">갑천 음악 낙화/불꽃 크루즈쇼</div>
+                                <div class="t-desc">봄바람의 음악 선율과 동기화되어 정림동 갑천 강변 하늘을 화려하게 겹쳐 채우는 초대형 친환경 레이저 불꽃쇼</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="meta-notice-grid">
+                        <div class="notice-card-node">
+                            <h4>🌿 탄소 중립 에코 혜택</h4>
+                            <p>축제 당일 개인 텀블러/다회용 컵을 지참하여 방문 시 현장 입점 푸드트럭 전 매장 음료류 10% 즉시 할인 마일리지 적용.</p>
+                        </div>
+                        <div class="notice-card-node">
+                            <h4>🚗 주차·교통 임시 통제</h4>
+                            <p>정림초등학교 대운동장 및 수밋들 공영주차장 무료 개방. 당일 갑천로 일부 구간 비대칭 차 없는 거리 운영.</p>
+                        </div>
+                    </div>
+
+                    <button class="btn-return-gate" onclick="controlGUI(false)">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="19" x2="12" y2="5"></line><polyline points="5 12 12 5 19 12"></polyline></svg>
+                        &nbsp;전면 아트 포스터 화면으로 돌아가기
+                    </button>
+                </div>
+            </section>
+
+        </div>
+    </div>
+
+    <script>
+        const stageContainer = document.getElementById('masterStage');
+
+        // [GUI 인터랙션 엔진] 양방향 토글 링크 트랜지션
+        function controlGUI(moveToDetail) {
+            if(moveToDetail) {
+                stageContainer.classList.add('shifted');
+            } else {
+                stageContainer.classList.remove('shifted');
+            }
+        }
+
+        // 포스터 독립 캔버스 래핑 범위 내에서만 하염없이 떨어지는 난수 기반 벚꽃 스포너
+        function spawnCanvasPetal() {
+            const canvasFrame = document.querySelector('.poster-canvas');
+            // GUI 축 이동이 완료되어 상세창이 열렸을 땐 CPU 부하 저감을 위해 생성 루프 브레이크
+            if (!canvasFrame || stageContainer.classList.contains('shifted')) return;
+
+            const petal = document.createElement('div');
+            petal.classList.add('canvas-petal');
+            
+            // 미세 밸런스 난수 크기 분산 (8px ~ 18px)
+            const randomRadius = Math.random() * 10 + 8;
+            petal.style.width = `${randomRadius}px`;
+            petal.style.height = `${randomRadius}px`;
+            
+            // 포스터 좌우 폭 한정 랜덤 스포닝 포인트 매칭
+            petal.style.left = `${Math.random() * 115}%`;
+            petal.style.top = `-25px`;
+            
+            // 다층적 깊이감(Z-Index 체감)을 위한 속도차 주기가변 연산 (4.5초 ~ 8.5초)
+            const fallDuration = Math.random() * 4 + 4.5;
+            petal.style.animationDuration = `${fallDuration}s`;
+            
+            canvasFrame.appendChild(petal);
+
+            // 요소 정량 한계를 위한 자가 가비지 컬렉터
+            setTimeout(() => {
+                petal.remove();
+            }, fallDuration * 1000);
+        }
+
+        // 안정적인 스포닝 주기 시동 루프 (270ms)
+        setInterval(spawnCanvasPetal, 270);
+    </script>
+</body>
+</html>
